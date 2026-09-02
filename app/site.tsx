@@ -1,41 +1,991 @@
 'use client';
-
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SyntheticEvent, useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { SyntheticEvent, useEffect, useId, useState } from 'react';
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  ChevronDown,
+  Menu,
+  X,
+} from 'lucide-react';
 
-const services = [
-  ['Digital products', 'Web applications · Mobile applications · SaaS platforms · Customer portals · Commerce · Internal tools'],
-  ['Product & experience', 'Product strategy · UI/UX · Design systems · User research · Prototyping · Brand experiences'],
-  ['Software engineering', 'Frontend · Backend · Full-stack · APIs · Payments · Identity · Real-time systems'],
-  ['Cloud & infrastructure', 'Cloud architecture · DevOps · CI/CD · Containers · Performance · Observability'],
-  ['Platform & systems', 'API gateways · Communication platforms · SIP / VoIP · Provisioning · Automation'],
-  ['Data & AI', 'AI integrations · LLM applications · Data pipelines · Analytics · Search systems'],
-  ['Growth', 'SEO · Paid media · CRO · Analytics · Lifecycle · Marketing automation'],
-  ['Digital commerce', 'Shopify · Custom commerce · Payment integrations · Subscriptions · Checkout'],
-  ['Security & reliability', 'Application security · Access control · Rate limiting · Backups · Reliability engineering'],
+const capabilities: [string, string[]][] = [
+  [
+    'Digital products',
+    [
+      'Web applications',
+      'Mobile applications',
+      'SaaS platforms',
+      'Customer portals',
+      'E-commerce',
+      'Internal tools',
+    ],
+  ],
+  [
+    'Product & experience',
+    [
+      'Product strategy',
+      'User experience',
+      'Design systems',
+      'User research',
+      'Prototyping',
+      'Brand experiences',
+    ],
+  ],
+  [
+    'Software engineering',
+    [
+      'Frontend systems',
+      'Backend services',
+      'Full-stack delivery',
+      'APIs',
+      'Payments',
+      'Identity',
+    ],
+  ],
+  [
+    'Cloud & infrastructure',
+    [
+      'Cloud architecture',
+      'CI / CD',
+      'Containers',
+      'Performance',
+      'Observability',
+      'DevOps',
+    ],
+  ],
+  [
+    'Platform & systems',
+    [
+      'API gateways',
+      'Communications platforms',
+      'VoIP / SIP',
+      'Provisioning',
+      'Automation',
+      'Integrations',
+    ],
+  ],
+  [
+    'Data & AI',
+    [
+      'AI integrations',
+      'LLM applications',
+      'Data pipelines',
+      'Analytics',
+      'Search systems',
+      'Reporting',
+    ],
+  ],
+  [
+    'Growth',
+    [
+      'Technical SEO',
+      'Measurement',
+      'Conversion',
+      'Lifecycle',
+      'Paid media',
+      'Automation',
+    ],
+  ],
+  [
+    'Digital commerce',
+    [
+      'Shopify',
+      'Custom commerce',
+      'Payment integrations',
+      'Subscriptions',
+      'Checkout',
+      'Operations',
+    ],
+  ],
+  [
+    'Security & reliability',
+    [
+      'Application security',
+      'Access control',
+      'Rate limiting',
+      'Backups',
+      'Reliability engineering',
+      'Monitoring',
+    ],
+  ],
 ];
-const projects = [
-  { id: '01', title: 'Platform / 01', type: 'SaaS platform', tags: 'Product · Engineering · Infrastructure', art: 'project-a' },
-  { id: '02', title: 'Product / 02', type: 'Digital service', tags: 'Experience · Engineering · Growth', art: 'project-b' },
-  { id: '03', title: 'System / 03', type: 'Communications platform', tags: 'Infrastructure · APIs · Operations', art: 'project-c' },
+const nav = [
+  ['Work', '/work'],
+  ['Services', '/services'],
+  ['Products', '/products'],
+  ['About', '/about'],
+  ['Insights', '/insights'],
 ];
-
-function Logo({ inverse = false }: { inverse?: boolean }) { return <Link href="/" className={`brand ${inverse ? 'brand-inverse' : ''}`} aria-label="ELEVEN home"><Image src="/eleven-wordmark.png" alt="ELEVEN" width={105} height={42} priority /></Link>; }
-function Header() { const path=usePathname(); const [open,setOpen]=useState(false); const links=[['Work','/work'],['Services','/services'],['About','/about'],['Products','/products']]; return <header className="topbar"><Logo/><nav className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=><Link key={href} className={path===href?'active':''} href={href} onClick={()=>setOpen(false)}>{label}</Link>)}<Link className="nav-contact" href="/contact" onClick={()=>setOpen(false)}>Start a project <ArrowUpRight size={15}/></Link></nav><button className="menu" onClick={()=>setOpen(!open)} aria-label={open?'Close menu':'Open menu'}>{open?<X/>:<Menu/>}</button></header>; }
-function Footer() { return <footer className="footer"><div className="footer-top"><Logo inverse/><p>Product, engineering and operational depth for businesses with serious intent.</p></div><div className="footer-grid"><div><small>Company</small><Link href="/about">About</Link><Link href="/work">Work</Link><a href="#insights">Insights</a><Link href="/contact">Contact</Link></div><div><small>Services</small><Link href="/services">Product & UX</Link><Link href="/services">Software Engineering</Link><Link href="/services">Cloud & DevOps</Link><Link href="/services">Growth</Link></div><div><small>Technology</small><Link href="/services">APIs</Link><Link href="/services">Infrastructure</Link><Link href="/services">Automation</Link><Link href="/products">Communications</Link></div><div><small>Products</small><a href="https://www.elev1solutions.com/" target="_blank" rel="noreferrer">Eleven Solutions <ArrowUpRight size={13}/></a><small className="spaced">Social</small><a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a></div></div><div className="footer-bottom"><span>© ELEVEN</span><span>Privacy &nbsp; Terms</span></div></footer>; }
-function Intro({ index, eyebrow, children }: {index:string; eyebrow:string; children:React.ReactNode}) { return <div className="section-intro"><span className="index">{index}</span><div><p className="eyebrow">{eyebrow}</p>{children}</div></div>; }
-function TechVisual() { return <div className="tech-visual"><div className="browser"><div className="browser-head"><i/><i/><i/><span>eleven / system</span></div><div className="browser-body"><aside><b>overview</b><span>architecture</span><span>requests</span><span>operations</span></aside><div className="visual-main"><small>LIVE ARCHITECTURE</small><div className="node n1">CLIENT</div><div className="line l1"/><div className="node n2">API</div><div className="line l2"/><div className="node n3">SYSTEM</div><div className="pulse"/></div></div></div><div className="terminal"><span>01 / production</span><code>$ deployment verified<br/>↳ service health: nominal<br/>↳ latency: within threshold</code></div></div>; }
-function Cta(){return <section className="cta"><p className="eyebrow">Start a conversation</p><h2>Have something<br/><em>ambitious</em> in mind?</h2><p>Tell us what you are building, rebuilding or trying to scale.</p><Link className="button light" href="/contact">Start a project <ArrowUpRight size={17}/></Link><span className="contact-placeholder">hello@elev1.us</span></section>;}
-function ProjectPreview({project}:{project:typeof projects[number]}){return <article className="project"><div className={`project-art ${project.art}`}><span className="project-number">{project.id}</span><div className="art-window"><i/><i/><i/></div><div className="art-copy">{project.title.split(' / ')[0]}<br/><em>system</em></div></div><div className="project-meta"><div><p className="eyebrow">{project.type} — Placeholder case study</p><h3>{project.title}</h3><p>{project.tags}</p></div><Link href="/work" aria-label={`View ${project.title}`}><ArrowUpRight/></Link></div></article>;}
-
-export function HomePage(){return <><Header/><main><section className="hero"><div className="hero-copy"><p className="eyebrow">Independent technology partner</p><h1>Systems for<br/><em>ambitious</em> companies.</h1><p className="lead">ELEVEN partners with ambitious businesses to design, engineer, launch and scale digital products, platforms and technology infrastructure.</p><div className="hero-actions"><Link className="button" href="/contact">Start a project <ArrowUpRight size={17}/></Link><Link className="text-link" href="/work">Explore our work <ArrowDownRight size={17}/></Link></div></div><TechVisual/><div className="years"><strong>5+</strong><span>Years designing, building and operating digital products.</span></div></section><section className="statement"><Intro index="01" eyebrow="One connected practice"><h2>Product, engineering, infrastructure and growth. <em>Under one roof.</em></h2></Intro><p className="statement-copy">Fragmented vendors create fragmented products. We work from the first question to the systems that keep the answer working.</p><div className="lifecycle">{['Discover','Design','Engineer','Launch','Operate','Grow'].map((x,i)=><span key={x}><b>0{i+1}</b>{x}</span>)}</div></section><section className="work-section"><Intro index="02" eyebrow="Selected work"><h2>Built to be <em>operated.</em></h2></Intro><div className="projects">{projects.map(p=><ProjectPreview key={p.id} project={p}/>)}</div><Link className="text-link more-link" href="/work">View all work <ArrowUpRight size={17}/></Link></section><section className="capabilities"><Intro index="03" eyebrow="Capabilities"><h2>One partner.<br/><em>Entire stack.</em></h2></Intro><div className="service-index">{services.map(([name,copy],i)=><article key={name}><b>{String(i+1).padStart(2,'0')}</b><h3>{name}</h3><p>{copy}</p><ArrowDownRight size={19}/></article>)}</div></section><section className="method"><div className="method-header"><p className="eyebrow">How ELEVEN works</p><h2>Deliberate from<br/>problem to <em>production.</em></h2></div><div className="method-list">{[['01','Understand the business','Commercial problem, users, constraints and the technology already in the room.'],['02','Design the system','Product experience and technical architecture are designed together.'],['03','Build deliberately','Small production-ready releases, not large speculative builds.'],['04','Launch responsibly','Testing, deployment, monitoring and operational readiness are part of delivery.'],['05','Measure and improve','Performance and user behaviour inform what we build next.']].map(([n,t,c])=><div className="method-step" key={n}><span>{n}</span><h3>{t}</h3><p>{c}</p></div>)}</div></section><section className="experience"><div><p className="eyebrow">Experience</p><h2>5+<small>YEARS IN TECHNOLOGY</small></h2><p>Built through years of solving real product, engineering and operational problems.</p></div><div className="experience-index">{['Web','Mobile','Infrastructure','Communications','Cloud','Growth','SaaS','E-commerce','Automation'].map(x=><span key={x}>{x}</span>)}</div></section><section className="solutions"><div><p className="eyebrow">ELEVEN Solutions</p><h2>We build our own<br/><em>technology, too.</em></h2><p>Eleven Solutions is our communications and UCaaS platform — proof that our work is informed by systems, billing, availability and support.</p><a className="text-link" href="https://www.elev1solutions.com/" target="_blank" rel="noreferrer">Explore Eleven Solutions <ArrowUpRight size={17}/></a></div><ProductScreen/></section><section className="depth"><div className="depth-diagram">{['CLIENT APPLICATIONS','APPLICATION LAYER','APIs & SERVICES','DATA / IDENTITY / PAYMENTS','INFRASTRUCTURE','MONITORING & OPERATIONS'].map((x,i)=><div key={x}><span>{x}</span>{i<5&&<i/>}</div>)}</div><div><p className="eyebrow">Engineering depth</p><h2>Designed beyond<br/>the <em>interface.</em></h2><p>A polished interface is one layer of a successful digital product. ELEVEN works across experience, application engineering, infrastructure, integrations and operations.</p></div></section><section className="industries"><p className="eyebrow">Industries</p><h2>An index of<br/><em>useful complexity.</em></h2><div>{['SaaS','Technology','Telecommunications','Professional Services','FinTech','E-commerce','Marketplaces','Startups','B2B','Consumer Products'].map((x,i)=><span key={x}><b>{String(i+1).padStart(2,'0')}</b>{x}</span>)}</div></section><section className="principles"><p className="eyebrow">Why ELEVEN</p><h2>Fewer handoffs.<br/><em>More ownership.</em></h2><div>{['Senior technical thinking','Product and engineering together','Infrastructure from day one','Growth connected to product decisions','Long-term maintainability','Direct communication'].map(x=><p key={x}>{x}<ArrowUpRight size={16}/></p>)}</div></section><section className="insights" id="insights"><Intro index="10" eyebrow="Thinking in public"><h2>Notes from the <em>work.</em></h2></Intro><div className="article-list">{['Why most SaaS platforms become difficult to maintain','What good API architecture actually looks like','Designing infrastructure before you need to scale','Where SEO meets product engineering'].map((x,i)=><article key={x}><span>0{i+1} / {['Engineering','Product','Infrastructure','Growth'][i]}<ArrowUpRight size={18}/></span><h3>{x}</h3><div className={`article-image image-${i}`}/></article>)}</div></section><Cta/></main><Footer/></>;}
-function ProductScreen(){return <div className="product-screen"><div className="appbar">ELEVEN SOLUTIONS <span>● connected</span></div><div className="call-panel"><div className="caller">+1 307 209 4871</div><div className="wave">∿ ∿ ∿ ∿ ∿ ∿</div><div className="dial-actions"><i/><i/><i/></div></div><div className="product-stat"><b>Communication / system</b><span>cloud calling · messaging · SIP · provisioning</span></div></div>;}
-function PageHero({eyebrow,title,children}:{eyebrow:string;title:React.ReactNode;children:React.ReactNode}){return <section className="page-hero"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="lead">{children}</p></section>;}
-export function ServicesPage(){return <><Header/><main><PageHero eyebrow="Services" title={<>Capability without<br/><em>fragmentation.</em></>}>Companies often hire separate designers, developers, infrastructure engineers and growth agencies. ELEVEN brings integrated capability across the lifecycle.</PageHero><section className="detail-services">{services.map(([name,items],i)=><article key={name}><span>{String(i+1).padStart(2,'0')}</span><div><p className="eyebrow">{name}</p><h2>What we build.</h2><p className="detail-copy">{items}</p></div><div className="deliverables"><small>What we handle</small><p>Strategy, architecture, experience, engineering, launch readiness and clear operational handover — shaped to the system in front of us.</p></div></article>)}</section><Cta/></main><Footer/></>;}
-export function WorkPage(){const [filter,setFilter]=useState('All');const filters=['All','Product','Engineering','Mobile','Cloud','Growth','Infrastructure'];return <><Header/><main><PageHero eyebrow="Work" title={<>Systems in<br/><em>progress.</em></>}>A living archive of products and platforms. Current entries are intentionally marked as placeholders until full case-study material is available.</PageHero><div className="filters" aria-label="Work filters">{filters.map(f=><button className={filter===f?'selected':''} onClick={()=>setFilter(f)} key={f}>{f}</button>)}</div><section className="archive">{projects.concat(projects).map((p,i)=><ProjectPreview key={`${p.id}-${i}`} project={{...p,id:String(i+1).padStart(2,'0')}}/>)}</section><Cta/></main><Footer/></>;}
-export function AboutPage(){return <><Header/><main><PageHero eyebrow="About ELEVEN" title={<>Technology built<br/>with <em>ownership.</em></>}>For more than five years, we’ve been building and operating digital technology. Our approach starts with the business, and stays accountable to the system.</PageHero><section className="about-principles">{['Business before technology','Systems before features','Quality before velocity theatre','Long-term thinking','Clear communication','Ownership'].map((x,i)=><article key={x}><span>0{i+1}</span><h2>{x}</h2></article>)}</section><section className="timeline"><p className="eyebrow">The arc</p>{[['Year 1','Foundation'],['Years 2–3','Web, applications and digital platforms'],['Years 3–4','Infrastructure, automation and communications'],['Years 4–5+','Full-stack product, platform and growth capability']].map(([a,b])=><div key={a}><span>{a}</span><h3>{b}</h3></div>)}</section><section className="team-ready"><p className="eyebrow">People</p><h2>A team section, ready<br/>for the real <em>team.</em></h2><p>Profiles and photography will be introduced when supplied. The work stays in focus in the meantime.</p></section><Cta/></main><Footer/></>;}
-export function ProductsPage(){return <><Header/><main><PageHero eyebrow="Products" title={<>We operate what<br/>we <em>build.</em></>}>Owning product software gives us first-hand experience with production systems, billing, infrastructure, availability, security and support.</PageHero><section className="products-feature"><div><p className="eyebrow">01 / Eleven Solutions</p><h2>A communications platform with <em>operational stakes.</em></h2><p>Business communications, cloud calling, VoIP, messaging, SIP infrastructure, provisioning, billing and communication workflows — operated as a real software product.</p><a className="button" href="https://www.elev1solutions.com/" target="_blank" rel="noreferrer">Explore Eleven Solutions <ArrowUpRight size={17}/></a></div><ProductScreen/></section><Cta/></main><Footer/></>;}
-export function ContactPage(){const [done,setDone]=useState(false);function send(e:SyntheticEvent<HTMLFormElement>){e.preventDefault();setDone(true)}return <><Header/><main><PageHero eyebrow="Start a project" title={<>A considered brief<br/>is a good <em>start.</em></>}>Tell us what is changing, what is not working, or what you need to put into the world. The more context you can share, the more useful the first conversation will be.</PageHero><section className="contact-wrap">{done?<div className="confirmation"><p className="eyebrow">Received</p><h2>Thank you.<br/><em>We’ll be in touch.</em></h2><p>Your project brief has been captured in this demo experience.</p></div>:<form onSubmit={send} className="contact-form"><label>Name<input required placeholder="Your name"/></label><label>Work email<input required type="email" placeholder="you@company.com"/></label><label>Company<input placeholder="Company name"/></label><label>Website<input type="url" placeholder="https://"/></label><fieldset><legend>Services interested in</legend><div className="checks">{['Product Design','Web Development','Mobile Development','Software Engineering','Cloud / DevOps','Growth','SEO','Infrastructure','API / Integrations','Other'].map(x=><label key={x}><input type="checkbox"/>{x}</label>)}</div></fieldset><fieldset><legend>Approximate project stage</legend><div className="checks stages">{['Idea','Existing product','Rebuild','Scaling','Ongoing support'].map(x=><label key={x}><input name="stage" type="radio"/>{x}</label>)}</div></fieldset><label>Timeline<input placeholder="When do you want to begin?"/></label><label>Project description<textarea required placeholder="What are you looking to build?" rows={6}/></label><button className="button" type="submit">Tell us about your project <ArrowUpRight size={17}/></button></form>}</section></main><Footer/></>;}
+const industries = [
+  'SaaS',
+  'Technology',
+  'Telecommunications',
+  'Professional Services',
+  'FinTech',
+  'E-commerce',
+  'Marketplaces',
+  'Startups',
+  'B2B',
+  'Consumer Products',
+];
+function Logo({ light = false }: { light?: boolean }) {
+  return (
+    <Link
+      className={'brand ' + (light ? 'light' : '')}
+      href="/"
+      aria-label="ELEVEN home"
+    >
+      <Image
+        src="/eleven-wordmark.png"
+        alt="ELEVEN"
+        width={132}
+        height={48}
+        priority
+      />
+    </Link>
+  );
+}
+function Header() {
+  const path = usePathname();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', open);
+    return () => document.body.classList.remove('menu-open');
+  }, [open]);
+  return (
+    <header>
+      <Logo />
+      <nav className={open ? 'open' : ''} aria-label="Main navigation">
+        <small>ELEVEN / INDEX</small>
+        {nav.map(([n, h]) => (
+          <Link
+            href={h}
+            className={path === h ? 'active' : ''}
+            key={h}
+            onClick={() => setOpen(false)}
+          >
+            {n}
+          </Link>
+        ))}
+        <Link
+          className="nav-cta"
+          href="/contact"
+          onClick={() => setOpen(false)}
+        >
+          Start a project <ArrowUpRight size={15} />
+        </Link>
+      </nav>
+      <button
+        className="menu"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? <X /> : <Menu />}
+      </button>
+    </header>
+  );
+}
+function Footer() {
+  return (
+    <footer>
+      <div className="footer-lead">
+        <Logo light />
+        <p>
+          Product, engineering and operational depth for businesses with serious
+          intent.
+        </p>
+      </div>
+      <div className="footer-columns">
+        <div>
+          <small>Company</small>
+          <Link href="/about">About</Link>
+          <Link href="/work">Work</Link>
+          <Link href="/insights">Insights</Link>
+          <Link href="/contact">Contact</Link>
+        </div>
+        <div>
+          <small>Capabilities</small>
+          <Link href="/services">Product & experience</Link>
+          <Link href="/services">Software engineering</Link>
+          <Link href="/services">Cloud & infrastructure</Link>
+          <Link href="/services">Growth</Link>
+        </div>
+        <div>
+          <small>Technology</small>
+          <Link href="/services">APIs & integrations</Link>
+          <Link href="/services">Infrastructure</Link>
+          <Link href="/services">Automation</Link>
+          <Link href="/products">Communications</Link>
+        </div>
+        <div>
+          <small>Product</small>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.elev1solutions.com/"
+          >
+            Eleven Solutions <ArrowUpRight size={13} />
+          </a>
+          <small className="spaced">Contact</small>
+          <a href="mailto:hello@elev1.us">hello@elev1.us</a>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>© ELEVEN</span>
+        <span>Built with ownership.</span>
+      </div>
+    </footer>
+  );
+}
+function Title({
+  n,
+  label,
+  children,
+}: {
+  n: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="title">
+      <span>{n}</span>
+      <div>
+        <p className="eyebrow">{label}</p>
+        {children}
+      </div>
+    </div>
+  );
+}
+function Diagram() {
+  return (
+    <div className="diagram" aria-label="Architecture diagram">
+      <div className="diagram-top">
+        <span>ELEVEN / SYSTEM</span>
+        <span>LIVE / 01</span>
+      </div>
+      <div className="diagram-board">
+        <b className="node client">
+          CLIENT<small>WEB / MOBILE</small>
+        </b>
+        <i className="line l1" />
+        <b className="node api">
+          API<small>GATEWAY</small>
+        </b>
+        <i className="line l2" />
+        <b className="node data">
+          DATA<small>IDENTITY / BILLING</small>
+        </b>
+        <code>
+          DEPLOYMENT STATUS
+          <br />
+          <br />
+          build / verified
+          <br />
+          services / nominal
+          <br />
+          latency / normal
+        </code>
+      </div>
+    </div>
+  );
+}
+function ProductVisual() {
+  return (
+    <div className="product-visual">
+      <div className="product-main">
+        <div className="browser-bar">
+          ● ● ● <span>eleven solutions / communications</span>
+        </div>
+        <Image
+          fill
+          sizes="(max-width:800px) 90vw, 52vw"
+          src="/eleven-solutions-hero.jpeg"
+          alt="Eleven Solutions communications platform"
+        />
+      </div>
+      <div className="product-inset">
+        <Image
+          fill
+          sizes="(max-width:800px) 45vw, 25vw"
+          src="/eleven-solutions-call.png"
+          alt="Eleven Solutions call interface"
+        />
+      </div>
+      <small>01 / CLOUD CALLING · MESSAGING</small>
+    </div>
+  );
+}
+function CTA() {
+  return (
+    <section className="cta">
+      <p className="eyebrow">Start a conversation</p>
+      <h2>
+        Have something <em>ambitious</em> in mind?
+      </h2>
+      <p>Tell us what you are building, rebuilding or trying to scale.</p>
+      <Link className="button pale" href="/contact">
+        Start a project <ArrowUpRight size={17} />
+      </Link>
+    </section>
+  );
+}
+function CapabilityIndex() {
+  const [active, setActive] = useState(0);
+  const id = useId();
+  return (
+    <div className="cap-index">
+      {capabilities.map(([name, items], i) => {
+        const expanded = active === i;
+        return (
+          <article className={expanded ? 'expanded' : ''} key={name}>
+            <button
+              aria-expanded={expanded}
+              aria-controls={id + i}
+              onClick={() => setActive(expanded ? -1 : i)}
+            >
+              <span>{String(i + 1).padStart(2, '0')}</span>
+              <b>{name}</b>
+              <em>
+                {i === 2
+                  ? 'SYSTEMS / SERVICES'
+                  : i === 3
+                    ? 'PIPELINE / RUNTIME'
+                    : 'PRACTICE / DELIVERY'}
+              </em>
+              <ChevronDown />
+            </button>
+            <div id={id + i} hidden={!expanded}>
+              <i className="schematic" aria-hidden="true" />
+              <ul>
+                {items.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+function WorkFeature() {
+  return (
+    <article className="work-feature">
+      <div className="work-image">
+        <Image
+          src="/eleven-solutions-chat.png"
+          alt="Eleven Solutions messaging interface"
+          fill
+          sizes="(max-width:800px) 90vw, 63vw"
+        />
+      </div>
+      <div>
+        <p className="eyebrow">01 / Communications / SaaS / Infrastructure</p>
+        <h3>
+          ELEVEN <em>Solutions.</em>
+        </h3>
+        <p>
+          A production communications platform shaped by the same disciplines we
+          bring to client systems: product, engineering, cloud, billing and
+          APIs.
+        </p>
+        <ul className="meta">
+          <li>Product</li>
+          <li>Engineering</li>
+          <li>Cloud</li>
+          <li>Billing</li>
+          <li>APIs</li>
+          <li>Communications infrastructure</li>
+        </ul>
+        <a
+          className="text-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.elev1solutions.com/"
+        >
+          Explore product <ArrowUpRight size={17} />
+        </a>
+      </div>
+    </article>
+  );
+}
+function Architecture() {
+  const layers = [
+    ['Client applications', 'Web / Mobile / Product UI'],
+    ['Application layer', 'Business logic / Services'],
+    ['API & integration layer', 'REST / Webhooks / Gateways'],
+    ['Data / identity / billing', 'Databases / Auth / Payments'],
+    ['Infrastructure', 'Cloud / CI-CD / Runtime'],
+    ['Operations', 'Monitoring / Reliability / Security'],
+  ];
+  return (
+    <div className="architecture">
+      {layers.map(([t, d], i) => (
+        <div key={t}>
+          <span>{String(i + 1).padStart(2, '0')}</span>
+          <b>
+            {t}
+            <small>{d}</small>
+          </b>
+          {i < 5 && <i />}
+        </div>
+      ))}
+    </div>
+  );
+}
+export function HomePage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="hero">
+          <div>
+            <p className="eyebrow">ELEVEN / TECHNOLOGY / INDEPENDENT</p>
+            <h1>
+              Systems for <em>ambitious</em> companies.
+            </h1>
+            <p className="lead">
+              ELEVEN designs, engineers and operates digital products, platforms
+              and infrastructure for businesses with serious intent.
+            </p>
+            <div className="actions">
+              <Link className="button" href="/contact">
+                Start a project <ArrowUpRight size={17} />
+              </Link>
+              <Link className="text-link" href="/work">
+                Explore our work <ArrowDownRight size={17} />
+              </Link>
+            </div>
+            <div className="years">
+              <strong>5+</strong>
+              <span>Years building and operating digital products.</span>
+            </div>
+          </div>
+          <Diagram />
+        </section>
+        <section className="statement">
+          <Title n="01" label="One connected practice">
+            <h2>
+              Product, engineering, infrastructure and growth.{' '}
+              <em>Under one roof.</em>
+            </h2>
+          </Title>
+          <p>
+            Fragmented vendors make fragmented products. We work from the first
+            question to the systems that keep the answer working.
+          </p>
+          <div className="lifecycle">
+            {[
+              'Discover',
+              'Design',
+              'Engineer',
+              'Launch',
+              'Operate',
+              'Grow',
+            ].map((x, i) => (
+              <span key={x}>
+                <b>0{i + 1}</b>
+                {x}
+              </span>
+            ))}
+          </div>
+        </section>
+        <section className="work">
+          <Title n="02" label="Selected work">
+            <h2>
+              Built to be <em>operated.</em>
+            </h2>
+          </Title>
+          <WorkFeature />
+          <Link className="text-link centered" href="/work">
+            View work <ArrowUpRight size={17} />
+          </Link>
+        </section>
+        <section className="capabilities">
+          <div>
+            <p className="eyebrow">03 / Capabilities</p>
+            <h2>
+              One partner. <em>Entire stack.</em>
+            </h2>
+            <p>
+              Connected expertise across product thinking, technical delivery
+              and operational responsibility.
+            </p>
+          </div>
+          <CapabilityIndex />
+        </section>
+        <section className="experience">
+          <div>
+            <p className="eyebrow">Experience</p>
+            <h2>
+              5+<small>YEARS IN TECHNOLOGY</small>
+            </h2>
+            <p>
+              Built through years of solving real product, engineering and
+              operational problems.
+            </p>
+          </div>
+          <div className="experience-grid">
+            {[
+              'Web',
+              'Mobile',
+              'Infrastructure',
+              'Communications',
+              'Cloud',
+              'Growth',
+              'SaaS',
+              'E-commerce',
+              'Automation',
+            ].map((x, i) => (
+              <span key={x}>
+                <b>0{i + 1}</b>
+                {x}
+              </span>
+            ))}
+          </div>
+        </section>
+        <section className="process">
+          <div>
+            <p className="eyebrow">How ELEVEN works</p>
+            <h2>
+              Deliberate from problem to <em>production.</em>
+            </h2>
+          </div>
+          <div>
+            {[
+              [
+                'Understand the business',
+                'Commercial problem, users, constraints and existing technology.',
+              ],
+              [
+                'Design the system',
+                'Product experience and technical architecture are designed together.',
+              ],
+              [
+                'Build deliberately',
+                'Small production-ready releases rather than speculative builds.',
+              ],
+              [
+                'Launch responsibly',
+                'Testing, deployment, monitoring and operational readiness.',
+              ],
+              [
+                'Measure and improve',
+                'Performance and user behaviour shape the next release.',
+              ],
+            ].map(([t, c], i) => (
+              <article key={t}>
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{t}</h3>
+                  <p>{c}</p>
+                </div>
+                <i />
+              </article>
+            ))}
+          </div>
+        </section>
+        <section className="solutions">
+          <div>
+            <p className="eyebrow">ELEVEN Solutions</p>
+            <h2>
+              We build our own <em>technology, too.</em>
+            </h2>
+            <p>
+              Eleven Solutions is a communications platform for cloud calling,
+              VoIP, messaging, provisioning, billing and communication
+              workflows. Operating it gives our client work real production
+              context.
+            </p>
+            <a
+              className="text-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.elev1solutions.com/"
+            >
+              Explore Eleven Solutions <ArrowUpRight size={17} />
+            </a>
+          </div>
+          <ProductVisual />
+        </section>
+        <section className="depth">
+          <div>
+            <p className="eyebrow">Engineering depth</p>
+            <h2>
+              Designed beyond the <em>interface.</em>
+            </h2>
+            <p>
+              A polished interface is one layer of a successful product. ELEVEN
+              works across application engineering, integrations, identity,
+              billing, infrastructure and operations.
+            </p>
+          </div>
+          <Architecture />
+        </section>
+        <section className="industries">
+          <div>
+            <p className="eyebrow">Industries</p>
+            <h2>
+              Experience across <em>complex digital businesses.</em>
+            </h2>
+          </div>
+          <div>
+            {industries.map((x, i) => (
+              <span key={x}>
+                <b>{String(i + 1).padStart(2, '0')}</b>
+                {x}
+                <ArrowUpRight size={15} />
+              </span>
+            ))}
+          </div>
+        </section>
+        <section className="insights">
+          <Title n="10" label="Thinking in public">
+            <h2>
+              Notes from the <em>work.</em>
+            </h2>
+          </Title>
+          <div>
+            {[
+              'Why systems become difficult to maintain',
+              'What good API architecture actually looks like',
+              'Designing infrastructure before scale',
+              'Where growth meets product engineering',
+            ].map((x, i) => (
+              <Link href="/insights" key={x}>
+                <small>
+                  0{i + 1} /{' '}
+                  {['Engineering', 'Product', 'Infrastructure', 'Growth'][i]}
+                </small>
+                <h3>{x}</h3>
+                <ArrowUpRight size={19} />
+              </Link>
+            ))}
+          </div>
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+function PageHero({
+  label,
+  title,
+  children,
+}: {
+  label: string;
+  title: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="page-hero">
+      <p className="eyebrow">{label}</p>
+      <h1>{title}</h1>
+      <p className="lead">{children}</p>
+    </section>
+  );
+}
+export function WorkPage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="Work"
+          title={
+            <>
+              Proof in <em>production.</em>
+            </>
+          }
+        >
+          We build and operate our own technology. That operational context
+          changes the way we approach every digital product.
+        </PageHero>
+        <section className="page-section">
+          <WorkFeature />
+          <p className="note">
+            We do not invent client case studies. Further work is shared where
+            the right permission and context exist.
+          </p>
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+export function ServicesPage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="Capabilities"
+          title={
+            <>
+              Capability without <em>fragmentation.</em>
+            </>
+          }
+        >
+          Product, experience, engineering, cloud and growth work as one
+          continuous practice — not a chain of handoffs.
+        </PageHero>
+        <section className="services-page">
+          <div>
+            <p className="eyebrow">The index</p>
+            <h2>Practical expertise, organised around the whole system.</h2>
+          </div>
+          <CapabilityIndex />
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+export function ProductsPage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="Products"
+          title={
+            <>
+              We operate what we <em>build.</em>
+            </>
+          }
+        >
+          Owning product software brings firsthand experience of billing,
+          infrastructure, availability, security and support.
+        </PageHero>
+        <section className="product-page">
+          <WorkFeature />
+          <Diagram />
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+export function AboutPage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="About ELEVEN"
+          title={
+            <>
+              Technology built with <em>ownership.</em>
+            </>
+          }
+        >
+          ELEVEN is a multidisciplinary technology practice for ambitious
+          businesses that need product and technical depth in the same room.
+        </PageHero>
+        <section className="about-grid">
+          {[
+            [
+              'Product with consequence',
+              'Every design decision meets the realities of a running system.',
+            ],
+            [
+              'Engineering with context',
+              'Technical decisions begin with the commercial and user problem.',
+            ],
+            [
+              'Operations from day one',
+              'Reliability, observability and future ownership are part of the build.',
+            ],
+            [
+              'Growth connected to product',
+              'Measurement and distribution inform the product instead of trailing it.',
+            ],
+          ].map(([t, c], i) => (
+            <article key={t}>
+              <span>0{i + 1}</span>
+              <h2>{t}</h2>
+              <p>{c}</p>
+            </article>
+          ))}
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+export function InsightsPage() {
+  const items = [
+    'Why systems become difficult to maintain',
+    'What good API architecture actually looks like',
+    'Designing infrastructure before scale',
+    'Where growth meets product engineering',
+  ];
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="Insights"
+          title={
+            <>
+              Thinking in the <em>open.</em>
+            </>
+          }
+        >
+          Notes on product systems, engineering judgement and dependable digital
+          businesses.
+        </PageHero>
+        <section className="insights-page">
+          {items.map((x, i) => (
+            <article key={x}>
+              <small>
+                0{i + 1} /{' '}
+                {['Engineering', 'Product', 'Infrastructure', 'Growth'][i]}
+              </small>
+              <h2>{x}</h2>
+              <div>
+                <p>
+                  Practical thinking from the work of designing, building and
+                  operating software.
+                </p>
+                <Link className="text-link" href="/contact">
+                  Discuss this with us <ArrowUpRight size={16} />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </section>
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+export function ContactPage() {
+  const [sent, setSent] = useState(false);
+  function submit(e: SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSent(true);
+  }
+  return (
+    <>
+      <Header />
+      <main>
+        <PageHero
+          label="Start a project"
+          title={
+            <>
+              A considered brief is a good <em>start.</em>
+            </>
+          }
+        >
+          Tell us what is changing, what is not working, or what you need to put
+          into the world.
+        </PageHero>
+        <section className="contact">
+          {sent ? (
+            <div className="confirmation">
+              <p className="eyebrow">Your brief is ready</p>
+              <h2>
+                Thank you. <em>Let’s talk.</em>
+              </h2>
+              <p>
+                This form currently has no submission service connected. Your
+                answers remain in this browser; email{' '}
+                <a href="mailto:hello@elev1.us">hello@elev1.us</a> to start the
+                conversation.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={submit}>
+              <label>
+                Name
+                <input
+                  required
+                  name="name"
+                  autoComplete="name"
+                  placeholder="Your name"
+                />
+              </label>
+              <label>
+                Work email
+                <input
+                  required
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@company.com"
+                />
+              </label>
+              <label>
+                Company
+                <input name="company" placeholder="Company name" />
+              </label>
+              <label>
+                Website
+                <input name="website" type="url" placeholder="https://" />
+              </label>
+              <fieldset>
+                <legend>Services interested in</legend>
+                <div className="checks">
+                  {capabilities.map(([x]) => (
+                    <label key={x}>
+                      <input type="checkbox" value={x} />
+                      {x}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Project stage</legend>
+                <div className="checks">
+                  {[
+                    'Idea',
+                    'Existing product',
+                    'Rebuild',
+                    'Scaling',
+                    'Ongoing support',
+                  ].map((x) => (
+                    <label key={x}>
+                      <input type="radio" name="stage" value={x} />
+                      {x}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <label>
+                Timeline
+                <input
+                  name="timeline"
+                  placeholder="When do you want to begin?"
+                />
+              </label>
+              <label className="full">
+                Project description
+                <textarea
+                  required
+                  name="description"
+                  rows={6}
+                  placeholder="What are you looking to build?"
+                />
+              </label>
+              <button className="button" type="submit">
+                Prepare enquiry <ArrowUpRight size={17} />
+              </button>
+            </form>
+          )}
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
