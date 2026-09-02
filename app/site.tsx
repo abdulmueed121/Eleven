@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { SyntheticEvent, useEffect, useId, useState } from 'react';
 import {
   ArrowDownRight,
+  ArrowRight,
   ArrowUpRight,
   ChevronDown,
   Menu,
@@ -304,7 +305,7 @@ function ProductVisual() {
         <Image
           fill
           sizes="(max-width:800px) 90vw, 52vw"
-          src="/eleven-solutions-hero.jpeg"
+          src="/asset1.png"
           alt="Eleven Solutions communications platform"
         />
       </div>
@@ -312,7 +313,7 @@ function ProductVisual() {
         <Image
           fill
           sizes="(max-width:800px) 45vw, 25vw"
-          src="/eleven-solutions-call.png"
+          src="/asset1.png"
           alt="Eleven Solutions call interface"
         />
       </div>
@@ -378,7 +379,7 @@ function WorkFeature() {
     <article className="work-feature">
       <div className="work-image">
         <Image
-          src="/eleven-solutions-chat.png"
+          src="/asset1.png"
           alt="Eleven Solutions messaging interface"
           fill
           sizes="(max-width:800px) 90vw, 63vw"
@@ -585,7 +586,7 @@ export function HomePage() {
                   <h3>{t}</h3>
                   <p>{c}</p>
                 </div>
-                <i />
+                <ArrowRight className="process-arrow" aria-hidden="true" />
               </article>
             ))}
           </div>

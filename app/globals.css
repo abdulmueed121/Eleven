@@ -93,8 +93,12 @@ header {
   height: 100%;
   object-fit: contain;
 }
+.brand:not(.light) {
+  mix-blend-mode: multiply;
+}
 .brand.light {
   filter: invert(1);
+  mix-blend-mode: screen;
 }
 nav {
   display: flex;
@@ -583,10 +587,15 @@ nav small {
   line-height: 1.5;
   font-size: 14px;
 }
-.process article > i {
-  height: 1px;
+.process-arrow {
+  width: 19px;
+  height: 19px;
   align-self: center;
-  background: var(--bronze);
+  color: var(--bronze);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.process article:hover .process-arrow {
+  transform: rotate(-45deg) translateX(3px);
 }
 .solutions {
   padding-top: var(--space);
