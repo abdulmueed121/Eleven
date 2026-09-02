@@ -234,6 +234,7 @@ function Footer() {
           <a href="mailto:hello@elev1.us">hello@elev1.us</a>
         </div>
       </div>
+      
       <div className="footer-bottom">
         <span>© ELEVEN</span>
         <span>Built with ownership.</span>
