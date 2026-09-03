@@ -516,11 +516,11 @@ function WorkFeature() {
   return (
     <article className="work-feature">
       <div className="work-image">
-        <iframe
-          className="work-site"
-          src="https://elev1solutions.com"
-          title="Elev1 Solutions website"
-          referrerPolicy="strict-origin-when-cross-origin"
+        <Image
+          src="/asset1.png"
+          alt="Eleven Solutions call interface"
+          fill
+          sizes="(max-width:800px) 90vw, 63vw"
         />
       </div>
       <div>
