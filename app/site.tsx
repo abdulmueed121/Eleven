@@ -2,7 +2,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SyntheticEvent, useEffect, useId, useState } from 'react';
+import {
+  KeyboardEvent,
+  PointerEvent,
+  SyntheticEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import {
   ArrowDownRight,
   ArrowRight,
@@ -262,25 +270,154 @@ function Title({
     </div>
   );
 }
+type DiagramNode = 'client' | 'api' | 'data';
+
+type DiagramPoint = {
+  x: number;
+  y: number;
+};
+
+const initialDiagramPoints: Record<DiagramNode, DiagramPoint> = {
+  client: { x: 19, y: 25 },
+  api: { x: 49, y: 51 },
+  data: { x: 83, y: 75 },
+};
+
 function Diagram() {
+  const boardRef = useRef<HTMLDivElement>(null);
+  const [points, setPoints] = useState(initialDiagramPoints);
+
+  const moveNode = (
+    node: DiagramNode,
+    clientX: number,
+    clientY: number,
+    target: HTMLElement,
+  ) => {
+    const board = boardRef.current;
+    if (!board) return;
+
+    const bounds = board.getBoundingClientRect();
+    const halfWidth = target.offsetWidth / 2;
+    const halfHeight = target.offsetHeight / 2;
+    const x = Math.min(
+      bounds.width - halfWidth,
+      Math.max(halfWidth, clientX - bounds.left),
+    );
+    const y = Math.min(
+      bounds.height - halfHeight,
+      Math.max(halfHeight, clientY - bounds.top),
+    );
+
+    setPoints((current) => ({
+      ...current,
+      [node]: {
+        x: (x / bounds.width) * 100,
+        y: (y / bounds.height) * 100,
+      },
+    }));
+  };
+
+  const handlePointerDown = (
+    event: PointerEvent<HTMLButtonElement>,
+    node: DiagramNode,
+  ) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    moveNode(node, event.clientX, event.clientY, event.currentTarget);
+  };
+
+  const handlePointerMove = (
+    event: PointerEvent<HTMLButtonElement>,
+    node: DiagramNode,
+  ) => {
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+    moveNode(node, event.clientX, event.clientY, event.currentTarget);
+  };
+
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    node: DiagramNode,
+  ) => {
+    const change = 2;
+    const direction = {
+      ArrowLeft: [-change, 0],
+      ArrowRight: [change, 0],
+      ArrowUp: [0, -change],
+      ArrowDown: [0, change],
+    }[event.key];
+
+    if (!direction) return;
+    event.preventDefault();
+    setPoints((current) => ({
+      ...current,
+      [node]: {
+        x: Math.max(0, Math.min(100, current[node].x + direction[0])),
+        y: Math.max(0, Math.min(100, current[node].y + direction[1])),
+      },
+    }));
+  };
+
+  const nodeStyle = (node: DiagramNode) => ({
+    left: `${points[node].x}%`,
+    top: `${points[node].y}%`,
+  });
+
   return (
-    <div className="diagram" aria-label="Architecture diagram">
+    <div
+      className="diagram"
+      aria-label="Interactive architecture diagram. Drag a system block to reposition it."
+    >
       <div className="diagram-top">
         <span>ELEVEN / SYSTEM</span>
         <span>LIVE / 01</span>
       </div>
-      <div className="diagram-board">
-        <b className="node client">
+      <div className="diagram-board" ref={boardRef}>
+        <svg className="diagram-lines" aria-hidden="true" preserveAspectRatio="none">
+          <line
+            x1={`${points.client.x}%`}
+            y1={`${points.client.y}%`}
+            x2={`${points.api.x}%`}
+            y2={`${points.api.y}%`}
+          />
+          <line
+            x1={`${points.api.x}%`}
+            y1={`${points.api.y}%`}
+            x2={`${points.data.x}%`}
+            y2={`${points.data.y}%`}
+          />
+        </svg>
+        <button
+          className="node client"
+          type="button"
+          style={nodeStyle('client')}
+          aria-label="Client, web and mobile. Drag to move. Use arrow keys to reposition."
+          onPointerDown={(event) => handlePointerDown(event, 'client')}
+          onPointerMove={(event) => handlePointerMove(event, 'client')}
+          onKeyDown={(event) => handleKeyDown(event, 'client')}
+        >
           CLIENT<small>WEB / MOBILE</small>
-        </b>
-        <i className="line l1" />
-        <b className="node api">
+        </button>
+        <button
+          className="node api"
+          type="button"
+          style={nodeStyle('api')}
+          aria-label="API gateway. Drag to move. Use arrow keys to reposition."
+          onPointerDown={(event) => handlePointerDown(event, 'api')}
+          onPointerMove={(event) => handlePointerMove(event, 'api')}
+          onKeyDown={(event) => handleKeyDown(event, 'api')}
+        >
           API<small>GATEWAY</small>
-        </b>
-        <i className="line l2" />
-        <b className="node data">
+        </button>
+        <button
+          className="node data"
+          type="button"
+          style={nodeStyle('data')}
+          aria-label="Data, identity and billing. Drag to move. Use arrow keys to reposition."
+          onPointerDown={(event) => handlePointerDown(event, 'data')}
+          onPointerMove={(event) => handlePointerMove(event, 'data')}
+          onKeyDown={(event) => handleKeyDown(event, 'data')}
+        >
           DATA<small>IDENTITY / BILLING</small>
-        </b>
+        </button>
         <code>
           DEPLOYMENT STATUS
           <br />
