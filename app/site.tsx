@@ -15,7 +15,6 @@ import {
   ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
-  ChevronDown,
   Menu,
   X,
 } from 'lucide-react';
@@ -473,7 +472,7 @@ function CTA() {
   );
 }
 function CapabilityIndex() {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(-1);
   const id = useId();
   return (
     <div className="cap-index">
@@ -495,7 +494,7 @@ function CapabilityIndex() {
                     ? 'PIPELINE / RUNTIME'
                     : 'PRACTICE / DELIVERY'}
               </em>
-              <ChevronDown />
+              <ArrowUpRight aria-hidden="true" />
             </button>
             <div id={id + i} hidden={!expanded}>
               <i className="schematic" aria-hidden="true" />

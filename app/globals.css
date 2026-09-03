@@ -479,14 +479,14 @@ nav small {
 .cap-index button:hover b {
   transform: translateX(5px);
 }
-.cap-index .expanded button svg {
-  transform: rotate(180deg);
-}
 .cap-index article > div {
   padding: 4px 0 28px 45px;
   display: grid;
   grid-template-columns: 100px 1fr;
   gap: 28px;
+}
+.cap-index article > div[hidden] {
+  display: none;
 }
 .cap-index ul {
   list-style: none;
