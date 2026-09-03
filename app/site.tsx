@@ -430,7 +430,7 @@ function Diagram() {
         </code>
       </div>
     </div>
-    
+
   );
 }
 function ProductVisual() {
@@ -440,6 +440,7 @@ function ProductVisual() {
         <div className="browser-bar">
           ● ● ● <span>eleven solutions / communications</span>
         </div>
+        
         <iframe
           className="product-site"
           src="https://elev1solutions.com"
