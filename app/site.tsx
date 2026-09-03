@@ -442,7 +442,7 @@ function ProductVisual() {
         <Image
           fill
           sizes="(max-width:800px) 90vw, 52vw"
-          src="/asset1.png"
+          src="/asset3.png"
           alt="Eleven Solutions communications platform"
         />
       </div>
