@@ -440,11 +440,11 @@ function ProductVisual() {
         <div className="browser-bar">
           ● ● ● <span>eleven solutions / communications</span>
         </div>
-        <Image
-          fill
-          sizes="(max-width:800px) 90vw, 52vw"
-          src="/asset3.png"
-          alt="Eleven Solutions communications platform"
+        <iframe
+          className="product-site"
+          src="https://elev1solutions.com"
+          title="Elev1 Solutions website"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
       <div className="product-inset">
