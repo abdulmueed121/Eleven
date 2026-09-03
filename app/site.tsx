@@ -517,7 +517,7 @@ function WorkFeature() {
     <article className="work-feature">
       <div className="work-image">
         <Image
-          src="/asset1.png"
+          src="/asset2.png"
           alt="Eleven Solutions call interface"
           fill
           sizes="(max-width:800px) 90vw, 63vw"
