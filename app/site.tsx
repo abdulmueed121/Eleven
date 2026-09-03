@@ -440,7 +440,6 @@ function ProductVisual() {
         <div className="browser-bar">
           ● ● ● <span>eleven solutions / communications</span>
         </div>
-        
         <iframe
           className="product-site"
           src="https://elev1solutions.com"
@@ -448,6 +447,7 @@ function ProductVisual() {
           referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
+      
       <div className="product-inset">
         <Image
           fill
