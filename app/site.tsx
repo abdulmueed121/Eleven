@@ -440,14 +440,13 @@ function ProductVisual() {
         <div className="browser-bar">
           ● ● ● <span>eleven solutions / communications</span>
         </div>
-        <iframe
-          className="product-site"
-          src="https://elev1solutions.com"
-          title="Elev1 Solutions website"
-          referrerPolicy="strict-origin-when-cross-origin"
+        <Image
+          fill
+          sizes="(max-width:800px) 90vw, 52vw"
+          src="/asset3.png"
+          alt="Eleven Solutions communications platform"
         />
       </div>
-      
       <div className="product-inset">
         <Image
           fill
@@ -517,11 +516,11 @@ function WorkFeature() {
   return (
     <article className="work-feature">
       <div className="work-image">
-        <Image
-          src="/asset2.png"
-          alt="Eleven Solutions messaging interface"
-          fill
-          sizes="(max-width:800px) 90vw, 63vw"
+        <iframe
+          className="work-site"
+          src="https://elev1solutions.com"
+          title="Elev1 Solutions website"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
       <div>
