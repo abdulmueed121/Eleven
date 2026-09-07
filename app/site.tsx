@@ -1,11 +1,13 @@
 'use client';
 import Image from 'next/image';
+import { ProjectForm } from './project-form';
+import { ContentCards } from './content-cards';
+import { services, products, insights } from '../lib/site-content';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   KeyboardEvent,
   PointerEvent,
-  SyntheticEvent,
   useEffect,
   useId,
   useRef,
@@ -159,7 +161,7 @@ export function Header() {
         {nav.map(([n, h]) => (
           <Link
             href={h}
-            className={path === h ? 'active' : ''}
+            className={path === h || path.startsWith(h + '/') ? 'active' : ''}
             aria-current={path === h ? 'page' : undefined}
             key={h}
             onClick={() => setOpen(false)}
@@ -206,17 +208,17 @@ export function Footer() {
         </div>
         <div>
           <small>Capabilities</small>
-          <Link href="/services">Product & experience</Link>
-          <Link href="/services">Software engineering</Link>
-          <Link href="/services">Cloud & infrastructure</Link>
-          <Link href="/services">Growth</Link>
+          <Link href="/services/product-experience">Product & experience</Link>
+          <Link href="/services/software-engineering">Software engineering</Link>
+          <Link href="/services/cloud-infrastructure">Cloud & infrastructure</Link>
+          <Link href="/services/growth">Growth</Link>
         </div>
         <div>
           <small>Technology</small>
-          <Link href="/services">APIs & integrations</Link>
-          <Link href="/services">Infrastructure</Link>
-          <Link href="/services">Automation</Link>
-          <Link href="/products">Communications</Link>
+          <Link href="/services/apis-integrations">APIs & integrations</Link>
+          <Link href="/services/infrastructure">Infrastructure</Link>
+          <Link href="/services/automation">Automation</Link>
+          <Link href="/services/communications">Communications</Link>
         </div>
         <div>
           <small>Product</small>
@@ -228,13 +230,13 @@ export function Footer() {
             
             Eleven Solutions <ArrowUpRight size={13} />
           </a>
-          <small className="spaced">Contact</small>
+          <Link href="/products/billing-pos">Billing & POS</Link><Link href="/products/sms-gateway">SMS gateway API</Link><Link href="/products/kyc">KYC & identity matching</Link><Link href="/products/vid">VID</Link><small className="spaced">Contact</small>
           <a href="mailto:hello@elev1.us">hello@elev1.us</a>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© ELEVEN</span>
-        <span>Built with ownership.</span>
+        <div className="footer-legal"><Link href="/legal/privacy">Privacy</Link><Link href="/legal/terms">Terms</Link><Link href="/legal/cookies">Cookies</Link><Link href="/legal/acceptable-use">Acceptable use</Link><Link href="/legal/security">Security</Link><Link href="/legal">Legal & trust</Link></div><span>Built with ownership.</span>
       </div>
     </footer>
     
@@ -924,7 +926,7 @@ export function ServicesPage() {
           Product, experience, engineering, cloud and growth work as one
           continuous practice — not a chain of handoffs.
         </PageHero>
-        <section className="services-page">
+        <ContentCards items={services} base="/services" label="Explore our practice" /><section className="services-page">
           <div>
             <p className="eyebrow">The index</p>
             <h2>Practical expertise, organised around the whole system.</h2>
@@ -953,7 +955,7 @@ export function ProductsPage() {
           Owning product software brings firsthand experience of billing,
           infrastructure, availability, security and support.
         </PageHero>
-        <section className="product-page">
+        <ContentCards items={products} base="/products" label="The product portfolio" /><section className="product-page">
           <WorkFeature />
           <Diagram />
         </section>
@@ -979,6 +981,12 @@ export function AboutPage() {
           ELEVEN is a multidisciplinary technology practice for ambitious
           businesses that need product and technical depth in the same room.
         </PageHero>
+        <section className="about-grid">
+          <article><span>Our approach</span><h2>One brief. Shared responsibility.</h2><p>We begin with the business problem, the people affected and the constraints around delivery. Product and engineering decisions are considered together, including the systems, data and operational changes needed to make an interface useful.</p></article>
+          <article><span>How we work</span><h2>Make the important decisions visible.</h2><p>Discovery establishes scope, assumptions and success measures. Delivery turns those into reviewable increments, with acceptance criteria and a clear record of decisions. Launch planning includes migration, support and the handover needed to keep the product moving.</p></article>
+          <article><span>Product perspective</span><h2>Ownership changes the questions.</h2><p>Our own product work spans communications, billing, messaging and identity matching. It brings questions about reconciliation, permissions, provider dependencies and support into the conversation early.</p><Link className="text-link" href="/products">Explore our products ↗</Link></article>
+          <article><span>Working together</span><h2>A scope that fits the situation.</h2><p>An engagement may begin with discovery, a defined build, an integration or improvements to an existing system. Deliverables, responsibilities, commercial terms and ongoing support are agreed before work begins.</p><Link className="text-link" href="/contact">Tell us about your project ↗</Link></article>
+        </section>
         <section className="about-grid">
           {[
             [
@@ -1012,12 +1020,6 @@ export function AboutPage() {
   );
 }
 export function InsightsPage() {
-  const items = [
-    'Why systems become difficult to maintain',
-    'What good API architecture actually looks like',
-    'Designing infrastructure before scale',
-    'Where growth meets product engineering',
-  ];
   return (
     <>
       <Header />
@@ -1034,20 +1036,19 @@ export function InsightsPage() {
           businesses.
         </PageHero>
         <section className="insights-page">
-          {items.map((x, i) => (
-            <article key={x}>
+          {insights.map((x, i) => (
+            <article key={x.slug}>
               <small>
                 0{i + 1} /{' '}
                 {['Engineering', 'Product', 'Infrastructure', 'Growth'][i]}
               </small>
-              <h2>{x}</h2>
+              <h2><Link href={`/insights/${x.slug}`}>{x.title}</Link></h2>
               <div>
                 <p>
-                  Practical thinking from the work of designing, building and
-                  operating software.
+                  {x.intro}
                 </p>
-                <Link className="text-link" href="/contact">
-                  Discuss this with us <ArrowUpRight size={16} />
+                <Link className="text-link" href={`/insights/${x.slug}`}>
+                  Read insight <ArrowUpRight size={16} />
                 </Link>
               </div>
             </article>
@@ -1060,121 +1061,5 @@ export function InsightsPage() {
   );
 }
 export function ContactPage() {
-  const [sent, setSent] = useState(false);
-  function submit(e: SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSent(true);
-  }
-  return (
-    <>
-      <Header />
-      <main>
-        <PageHero
-          label="Start a project"
-          title={
-            <>
-              A considered brief is a good <em>start.</em>
-            </>
-          }
-        >
-          Tell us what is changing, what is not working, or what you need to put
-          into the world.
-        </PageHero>
-        <section className="contact">
-          {sent ? (
-            <div className="confirmation">
-              <p className="eyebrow">Your brief is ready</p>
-              <h2>
-                Thank you. <em>Let’s talk.</em>
-              </h2>
-              <p>
-                This form currently has no submission service connected. Your
-                answers remain in this browser; email{' '}
-                <a href="mailto:hello@elev1.us">hello@elev1.us</a> to start the
-                conversation.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={submit}>
-              <label>
-                Name
-                <input
-                  required
-                  name="name"
-                  autoComplete="name"
-                  placeholder="Your name"
-                />
-              </label>
-              <label>
-                Work email
-                <input
-                  required
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                />
-              </label>
-              <label>
-                Company
-                <input name="company" placeholder="Company name" />
-              </label>
-              <label>
-                Website
-                <input name="website" type="url" placeholder="https://" />
-              </label>
-              <fieldset>
-                <legend>Services interested in</legend>
-                <div className="checks">
-                  {capabilities.map(([x]) => (
-                    <label key={x}>
-                      <input type="checkbox" value={x} />
-                      {x}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend>Project stage</legend>
-                <div className="checks">
-                  {[
-                    'Idea',
-                    'Existing product',
-                    'Rebuild',
-                    'Scaling',
-                    'Ongoing support',
-                  ].map((x) => (
-                    <label key={x}>
-                      <input type="radio" name="stage" value={x} />
-                      {x}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <label>
-                Timeline
-                <input
-                  name="timeline"
-                  placeholder="When do you want to begin?"
-                />
-              </label>
-              <label className="full">
-                Project description
-                <textarea
-                  required
-                  name="description"
-                  rows={6}
-                  placeholder="What are you looking to build?"
-                />
-              </label>
-              <button className="button" type="submit">
-                Prepare enquiry <ArrowUpRight size={17} />
-              </button>
-            </form>
-          )}
-        </section>
-      </main>
-      <Footer />
-    </>
-  );
+  return <><Header /><main><PageHero label="Start a project" title={<>A considered brief is a good <em>start.</em></>}>Tell us about your business, the challenge and the outcome you need. We’ll use your brief to shape a focused first conversation.</PageHero><section className="contact"><ProjectForm /></section></main><Footer /></>;
 }
