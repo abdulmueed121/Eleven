@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Header, Footer } from './site';
 
 
@@ -13,12 +12,12 @@ export default function NotFound() {
           <div className="lead">
             <p>The page you are looking for is unavailable.</p>
             <div className="actions">
-              <Link className="button" href="/">
+              <a className="button" href="/">
                 Back to home
-              </Link>
-              <Link className="text-link" href="/contact">
+              </a>
+              <a className="text-link" href="/contact">
                 Contact ELEVEN
-              </Link>
+              </a>
             </div>
           </div>
         </section>

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { ProjectForm } from './project-form';
 import { ContentCards } from './content-cards';
 import { services, products, insights } from '../lib/site-content';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   KeyboardEvent,
@@ -131,7 +130,7 @@ const nav = [
 ];
 function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link
+    <a
       className={'brand ' + (light ? 'light' : '')}
       href="/"
       aria-label="ELEVEN home"
@@ -143,7 +142,7 @@ function Logo({ light = false }: { light?: boolean }) {
         height={48}
         priority
       />
-    </Link>
+    </a>
   );
 }
 export function Header() {
@@ -159,7 +158,7 @@ export function Header() {
       <nav className={open ? 'open' : ''} aria-label="Main navigation">
         <small>ELEVEN / INDEX</small>
         {nav.map(([n, h]) => (
-          <Link
+          <a
             href={h}
             className={path === h || path.startsWith(h + '/') ? 'active' : ''}
             aria-current={path === h ? 'page' : undefined}
@@ -167,15 +166,15 @@ export function Header() {
             onClick={() => setOpen(false)}
           >
             {n}
-          </Link>
+          </a>
         ))}
-        <Link
+        <a
           className="nav-cta"
           href="/contact"
           onClick={() => setOpen(false)}
         >
           Start a project <ArrowUpRight size={15} />
-        </Link>
+        </a>
       </nav>
       <button
         className="menu"
@@ -201,24 +200,24 @@ export function Footer() {
       <div className="footer-columns">
         <div>
           <small>Company</small>
-          <Link href="/about">About</Link>
-          <Link href="/work">Work</Link>
-          <Link href="/insights">Insights</Link>
-          <Link href="/contact">Contact</Link>
+          <a href="/about">About</a>
+          <a href="/work">Work</a>
+          <a href="/insights">Insights</a>
+          <a href="/contact">Contact</a>
         </div>
         <div>
           <small>Capabilities</small>
-          <Link href="/services/product-experience">Product & experience</Link>
-          <Link href="/services/software-engineering">Software engineering</Link>
-          <Link href="/services/cloud-infrastructure">Cloud & infrastructure</Link>
-          <Link href="/services/growth">Growth</Link>
+          <a href="/services/product-experience">Product & experience</a>
+          <a href="/services/software-engineering">Software engineering</a>
+          <a href="/services/cloud-infrastructure">Cloud & infrastructure</a>
+          <a href="/services/growth">Growth</a>
         </div>
         <div>
           <small>Technology</small>
-          <Link href="/services/apis-integrations">APIs & integrations</Link>
-          <Link href="/services/infrastructure">Infrastructure</Link>
-          <Link href="/services/automation">Automation</Link>
-          <Link href="/services/communications">Communications</Link>
+          <a href="/services/apis-integrations">APIs & integrations</a>
+          <a href="/services/infrastructure">Infrastructure</a>
+          <a href="/services/automation">Automation</a>
+          <a href="/services/communications">Communications</a>
         </div>
         <div>
           <small>Product</small>
@@ -230,13 +229,13 @@ export function Footer() {
             
             Eleven Solutions <ArrowUpRight size={13} />
           </a>
-          <Link href="/products/billing-pos">Billing & POS</Link><Link href="/products/sms-gateway">SMS gateway API</Link><Link href="/products/kyc">KYC & identity matching</Link><Link href="/products/vid">VID</Link><small className="spaced">Contact</small>
+          <a href="/products/billing-pos">Billing & POS</a><a href="/products/sms-gateway">SMS gateway API</a><a href="/products/kyc">KYC & identity matching</a><a href="/products/vid">VID</a><small className="spaced">Contact</small>
           <a href="mailto:hello@elev1.us">hello@elev1.us</a>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© ELEVEN</span>
-        <div className="footer-legal"><Link href="/legal/privacy">Privacy</Link><Link href="/legal/terms">Terms</Link><Link href="/legal/cookies">Cookies</Link><Link href="/legal/acceptable-use">Acceptable use</Link><Link href="/legal/security">Security</Link><Link href="/legal">Legal & trust</Link></div><span>Built with ownership.</span>
+        <div className="footer-legal"><a href="/legal/privacy">Privacy</a><a href="/legal/terms">Terms</a><a href="/legal/cookies">Cookies</a><a href="/legal/acceptable-use">Acceptable use</a><a href="/legal/security">Security</a><a href="/legal">Legal & trust</a></div><span>Built with ownership.</span>
       </div>
     </footer>
     
@@ -533,9 +532,9 @@ function CTA() {
         Have something <em>ambitious</em> in mind?
       </h2>
       <p>Tell us what you are building, rebuilding or trying to scale.</p>
-      <Link className="button pale" href="/contact">
+      <a className="button pale" href="/contact">
         Start a project <ArrowUpRight size={17} />
-      </Link>
+      </a>
     </section>
   );
 }
@@ -659,12 +658,12 @@ export function HomePage() {
               and infrastructure for businesses with serious intent.
             </p>
             <div className="actions">
-              <Link className="button" href="/contact">
+              <a className="button" href="/contact">
                 Start a project <ArrowUpRight size={17} />
-              </Link>
-              <Link className="text-link" href="/work">
+              </a>
+              <a className="text-link" href="/work">
                 Explore our work <ArrowDownRight size={17} />
-              </Link>
+              </a>
             </div>
             <div className="years">
               <strong>5+</strong>
@@ -720,9 +719,9 @@ export function HomePage() {
             </h2>
           </Title>
           <WorkFeature />
-          <Link className="text-link centered" href="/work">
+          <a className="text-link centered" href="/work">
             View work <ArrowUpRight size={17} />
-          </Link>
+          </a>
         </section>
         <section className="capabilities">
           <div>
@@ -985,8 +984,8 @@ export function AboutPage() {
         <section className="about-grid">
           <article><span>Our approach</span><h2>One brief. Shared responsibility.</h2><p>We begin with the business problem, the people affected and the constraints around delivery. Product and engineering decisions are considered together, including the systems, data and operational changes needed to make an interface useful.</p></article>
           <article><span>How we work</span><h2>Make the important decisions visible.</h2><p>Discovery establishes scope, assumptions and success measures. Delivery turns those into reviewable increments, with acceptance criteria and a clear record of decisions. Launch planning includes migration, support and the handover needed to keep the product moving.</p></article>
-          <article><span>Product perspective</span><h2>Ownership changes the questions.</h2><p>Our own product work spans communications, billing, messaging and identity matching. It brings questions about reconciliation, permissions, provider dependencies and support into the conversation early.</p><Link className="text-link" href="/products">Explore our products ↗</Link></article>
-          <article><span>Working together</span><h2>A scope that fits the situation.</h2><p>An engagement may begin with discovery, a defined build, an integration or improvements to an existing system. Deliverables, responsibilities, commercial terms and ongoing support are agreed before work begins.</p><Link className="text-link" href="/contact">Tell us about your project ↗</Link></article>
+          <article><span>Product perspective</span><h2>Ownership changes the questions.</h2><p>Our own product work spans communications, billing, messaging and identity matching. It brings questions about reconciliation, permissions, provider dependencies and support into the conversation early.</p><a className="text-link" href="/products">Explore our products ↗</a></article>
+          <article><span>Working together</span><h2>A scope that fits the situation.</h2><p>An engagement may begin with discovery, a defined build, an integration or improvements to an existing system. Deliverables, responsibilities, commercial terms and ongoing support are agreed before work begins.</p><a className="text-link" href="/contact">Tell us about your project ↗</a></article>
         </section>
         <section className="about-grid">
           {[
@@ -1043,14 +1042,14 @@ export function InsightsPage() {
                 0{i + 1} /{' '}
                 {['Engineering', 'Product', 'Infrastructure', 'Growth'][i]}
               </small>
-              <h2><Link href={`/insights/${x.slug}`}>{x.title}</Link></h2>
+              <h2><a href={`/insights/${x.slug}`}>{x.title}</a></h2>
               <div>
                 <p>
                   {x.intro}
                 </p>
-                <Link className="text-link" href={`/insights/${x.slug}`}>
+                <a className="text-link" href={`/insights/${x.slug}`}>
                   Read insight <ArrowUpRight size={16} />
-                </Link>
+                </a>
               </div>
             </article>
           ))}

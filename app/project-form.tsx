@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
@@ -30,7 +29,7 @@ export function ProjectForm() {
     } catch (err) { setStatus('idle'); setError(err instanceof Error && err.name !== 'TimeoutError' ? err.message : 'We could not confirm submission. Please retry or email hello@elev1.us.'); }
     finally { pending.current = false; }
   }
-  if (status === 'success') return <div className="confirmation" ref={statusRef} tabIndex={-1} aria-live="polite"><CheckCircle2 size={40} /><p className="eyebrow">Brief submitted</p><h2>Thank you. Let’s talk.</h2><p>Your brief has been accepted by our email service for delivery to the ELEVEN team. We’ll review the details and respond to your work email.</p><Link className="text-link" href="/products">Explore our products ↗</Link></div>;
+  if (status === 'success') return <div className="confirmation" ref={statusRef} tabIndex={-1} aria-live="polite"><CheckCircle2 size={40} /><p className="eyebrow">Brief submitted</p><h2>Thank you. Let’s talk.</h2><p>Your brief has been accepted by our email service for delivery to the ELEVEN team. We’ll review the details and respond to your work email.</p><a className="text-link" href="/products">Explore our products ↗</a></div>;
   return <form onSubmit={submit} aria-busy={status === 'sending'}>
     <div className="full form-intro"><p className="eyebrow">01 / About you</p><h2>The people behind the project.</h2><p>Required fields are marked *. Share business contact details; please leave sensitive information out of this brief.</p></div>
     {fields.slice(0, 7).map(([name, label, max, required]) => <label key={name}>{label}{required ? ' *' : ' (optional)'}<input name={name} required={required} maxLength={max} type={name === 'email' ? 'email' : name === 'website' ? 'url' : name === 'phone' ? 'tel' : 'text'} autoComplete={({ name: 'name', email: 'email', company: 'organization', role: 'organization-title', phone: 'tel', website: 'url' } as Record<string, string>)[name]} placeholder={name === 'website' ? 'https://' : name === 'location' ? 'Country and time zone' : undefined} /></label>)}
@@ -42,8 +41,8 @@ export function ProjectForm() {
     <label className="full">Project details *<textarea name="description" required minLength={30} maxLength={6000} rows={7} placeholder="Describe the problem, intended users, required features, business goals and what success would look like. Include any fixed deadlines or constraints." /></label>
     <label className="full">Existing technology & integrations (optional)<textarea name="technology" maxLength={2000} rows={3} placeholder="Current stack, systems to connect, migration needs or infrastructure requirements." /></label>
     <label className="full">References & additional context (optional)<textarea name="references" maxLength={2000} rows={3} placeholder="Public reference links, stakeholders, procurement requirements or questions for us. If you need an NDA, mention it here before sharing confidential details." /></label>
-    <label className="full privacy-check"><input name="consent" type="checkbox" required /><span>I have read the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer">privacy policy</Link> and understand that ELEVEN will use these details to assess and respond to my enquiry. *</span></label>
-    <p className="full form-note">No marketing signup. Do not include identity documents, passwords, payment information or sensitive personal data. Website <Link href="/legal/terms" target="_blank" rel="noopener noreferrer">terms & conditions</Link> apply.</p>
+    <label className="full privacy-check"><input name="consent" type="checkbox" required /><span>I have read the <a href="/legal/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a> and understand that ELEVEN will use these details to assess and respond to my enquiry. *</span></label>
+    <p className="full form-note">No marketing signup. Do not include identity documents, passwords, payment information or sensitive personal data. Website <a href="/legal/terms" target="_blank" rel="noopener noreferrer">terms & conditions</a> apply.</p>
     <div className="full form-error" ref={statusRef} tabIndex={-1} role={error ? 'alert' : undefined}>{error}</div>
     <button className="button" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending your brief…' : 'Send project brief'}<ArrowUpRight size={18} /></button>
     <p className="full form-note">Prefer email? <a href="mailto:hello@elev1.us">hello@elev1.us</a></p>
