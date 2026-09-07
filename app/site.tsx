@@ -486,11 +486,12 @@ function PhoneStage() {
         </p>
       </div>
       <figure className="phone-art-placeholder">
-        <div className="phone-art-guides" aria-hidden="true" />
-        <figcaption>
-          Phone artwork goes here
-          <small>Replace this stage with your final communications asset.</small>
-        </figcaption>
+        <Image
+          src="/main%20asset.png"
+          alt="Eleven Solutions mobile calling and messaging interfaces"
+          fill
+          sizes="(max-width: 850px) 100vw, 62vw"
+        />
       </figure>
     </section>
   );
