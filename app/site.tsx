@@ -434,6 +434,111 @@ function Diagram() {
 
   );
 }
+function ClusterNetwork() {
+  return (
+    <div className="cluster-network" aria-label="A connected automation cluster">
+      <div className="cluster-sources" aria-label="Connected sources">
+        <span>HubSpot</span>
+        <span>LinkedIn</span>
+        <span className="source-active">Apollo</span>
+        <span>Crunchbase</span>
+        <span>Clearbit</span>
+      </div>
+      <div className="cluster-flow cluster-flow-in" aria-hidden="true" />
+      <div className="cluster-core">
+        <i aria-hidden="true" />
+        <span>Cluster</span>
+      </div>
+      <div className="cluster-flow cluster-flow-out" aria-hidden="true" />
+      <div className="cluster-agents" aria-label="Automation agents">
+        <span className="agent agent-research">Research agent</span>
+        <span className="agent agent-review">Review agent</span>
+        <span className="agent agent-outreach">Outreach agent</span>
+      </div>
+      <div className="cluster-results" aria-label="Cluster results">
+        <div className="result-qualified">
+          <b>Account qualified</b>
+          <small>94% ICP fit · VP Sales found</small>
+        </div>
+        <div className="result-signal">
+          <b>Signal detected</b>
+          <small>Cursor is hiring GTM roles</small>
+        </div>
+        <div className="result-sequence">
+          <b>Sequence drafted</b>
+          <small>Intro message · Follow-up ready</small>
+        </div>
+      </div>
+    </div>
+  );
+}
+function BlockField() {
+  return (
+    <figure className="block-field">
+      <Image
+        src="/lifecycle-blocks.png"
+        alt="An isometric field of connected system blocks with one active orange cube"
+        fill
+        sizes="(max-width: 850px) 100vw, 62vw"
+      />
+    </figure>
+  );
+}
+function PhoneStage() {
+  return (
+    <section className="phone-stage">
+      <div>
+        <p className="eyebrow">Omnichannel experience</p>
+        <h2>
+          One conversation, <em>every channel.</em>
+        </h2>
+        <p>
+          Make every customer interaction feel continuous, even when it moves
+          between calls, messages and your product.
+        </p>
+      </div>
+      <figure className="phone-art-placeholder">
+        <div className="phone-art-guides" aria-hidden="true" />
+        <figcaption>
+          Phone artwork goes here
+          <small>Replace this stage with your final communications asset.</small>
+        </figcaption>
+      </figure>
+    </section>
+  );
+}
+function SystemStudies() {
+  const cards = [
+    ['Systems that make the next move clear', 'Water and signal studies'],
+    ['Technology should create momentum', 'Transparent systems'],
+    ['Trust needs an architecture', 'Connected pathways'],
+  ];
+  return (
+    <section className="system-studies">
+      <div className="study-heading">
+        <p className="eyebrow">Perspective</p>
+        <h2>Technology with a point of view.</h2>
+      </div>
+      <div className="study-grid">
+        {cards.map(([title, alt], index) => (
+          <article key={title}>
+            <Image
+              src="/system-studies.png"
+              alt={alt}
+              width={800}
+              height={280}
+              className={`study-image study-image-${index + 1}`}
+            />
+            <h3>{title}</h3>
+            <Link className="text-link" href="/insights">
+              Read more <ArrowUpRight size={15} />
+            </Link>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
 function ProductVisual() {
   return (
     <div className="product-visual">
@@ -608,6 +713,19 @@ export function HomePage() {
           </div>
           <Diagram />
         </section>
+        <section className="hero-signal">
+          <div>
+            <p className="eyebrow">Connected intelligence</p>
+            <h2>
+              Useful systems build <em>momentum.</em>
+            </h2>
+            <p>
+              We connect the right people, signals and workflows so your team
+              can act while the opportunity is still there.
+            </p>
+          </div>
+          <ClusterNetwork />
+        </section>
         <section className="statement">
           <Title n="01" label="One connected practice">
             <h2>
@@ -753,6 +871,20 @@ export function HomePage() {
           </div>
           <ProductVisual />
         </section>
+        <section className="lifecycle-blocks">
+          <div>
+            <p className="eyebrow">Systems in motion</p>
+            <h2>
+              Every part has a place in the <em>whole.</em>
+            </h2>
+            <p>
+              A flexible system is built from deliberate, connected parts. We
+              design the rules that make the pieces work together.
+            </p>
+          </div>
+          <BlockField />
+        </section>
+        <PhoneStage />
         <section className="depth">
           <div>
             <p className="eyebrow">Engineering depth</p>
@@ -808,6 +940,7 @@ export function HomePage() {
             ))}
           </div>
         </section>
+        <SystemStudies />
         <CTA />
       </main>
       <Footer />
