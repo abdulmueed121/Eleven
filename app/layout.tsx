@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
+
 const instrument = localFont({
   src: './fonts/instrument-sans-2.woff2',
   weight: '400 700',

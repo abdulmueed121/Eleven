@@ -513,7 +513,6 @@ function CapabilityIndex() {
     </div>
   );
 }
-
 function WorkFeature() {
   return (
     <article className="work-feature">
