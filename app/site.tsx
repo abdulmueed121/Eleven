@@ -498,6 +498,7 @@ function PhoneStage() {
     </section>
   );
 }
+
 function ProductVisual() {
   return (
     <div className="product-visual">
