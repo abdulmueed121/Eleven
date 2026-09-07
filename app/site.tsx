@@ -127,18 +127,6 @@ const nav = [
   ['About', '/about'],
   ['Insights', '/insights'],
 ];
-const industries = [
-  'SaaS',
-  'Technology',
-  'Telecommunications',
-  'Professional Services',
-  'FinTech',
-  'E-commerce',
-  'Marketplaces',
-  'Startups',
-  'B2B',
-  'Consumer Products',
-];
 function Logo({ light = false }: { light?: boolean }) {
   return (
     <Link
@@ -507,38 +495,6 @@ function PhoneStage() {
     </section>
   );
 }
-function SystemStudies() {
-  const cards = [
-    ['Systems that make the next move clear', 'Water and signal studies'],
-    ['Technology should create momentum', 'Transparent systems'],
-    ['Trust needs an architecture', 'Connected pathways'],
-  ];
-  return (
-    <section className="system-studies">
-      <div className="study-heading">
-        <p className="eyebrow">Perspective</p>
-        <h2>Technology with a point of view.</h2>
-      </div>
-      <div className="study-grid">
-        {cards.map(([title, alt], index) => (
-          <article key={title}>
-            <Image
-              src="/system-studies.png"
-              alt={alt}
-              width={800}
-              height={280}
-              className={`study-image study-image-${index + 1}`}
-            />
-            <h3>{title}</h3>
-            <Link className="text-link" href="/insights">
-              Read more <ArrowUpRight size={15} />
-            </Link>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
 function ProductVisual() {
   return (
     <div className="product-visual">
@@ -899,48 +855,6 @@ export function HomePage() {
           </div>
           <Architecture />
         </section>
-        <section className="industries">
-          <div>
-            <p className="eyebrow">Industries</p>
-            <h2>
-              Experience across <em>complex digital businesses.</em>
-            </h2>
-          </div>
-          <div>
-            {industries.map((x, i) => (
-              <span key={x}>
-                <b>{String(i + 1).padStart(2, '0')}</b>
-                {x}
-                <ArrowUpRight size={15} />
-              </span>
-            ))}
-          </div>
-        </section>
-        <section className="insights">
-          <Title n="10" label="Thinking in public">
-            <h2>
-              Notes from the <em>work.</em>
-            </h2>
-          </Title>
-          <div>
-            {[
-              'Why systems become difficult to maintain',
-              'What good API architecture actually looks like',
-              'Designing infrastructure before scale',
-              'Where growth meets product engineering',
-            ].map((x, i) => (
-              <Link href="/insights" key={x}>
-                <small>
-                  0{i + 1} /{' '}
-                  {['Engineering', 'Product', 'Infrastructure', 'Growth'][i]}
-                </small>
-                <h3>{x}</h3>
-                <ArrowUpRight size={19} />
-              </Link>
-            ))}
-          </div>
-        </section>
-        <SystemStudies />
         <CTA />
       </main>
       <Footer />
