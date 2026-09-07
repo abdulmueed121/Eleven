@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
-import { Geist, Playfair_Display } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-const geist = Geist({ variable: '--font-sans', subsets: ['latin'] });
-const display = Playfair_Display({
-  variable: '--font-display',
-  subsets: ['latin'],
+const instrument = localFont({
+  src: './fonts/instrument-sans-2.woff2',
+  weight: '400 700',
+  style: 'normal',
+  variable: '--font-instrument',
+  display: 'swap',
+  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
 });
 
 export const metadata: Metadata = {
@@ -40,10 +43,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geist.variable} ${display.variable}`}>
-        {children}
-      </body>
+    <html lang="en" className={instrument.variable}>
+      <body>{children}</body>
     </html>
   );
 }

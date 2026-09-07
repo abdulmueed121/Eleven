@@ -156,7 +156,7 @@ function Logo({ light = false }: { light?: boolean }) {
     </Link>
   );
 }
-function Header() {
+export function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -172,6 +172,7 @@ function Header() {
           <Link
             href={h}
             className={path === h ? 'active' : ''}
+            aria-current={path === h ? 'page' : undefined}
             key={h}
             onClick={() => setOpen(false)}
           >
@@ -197,7 +198,7 @@ function Header() {
     </header>
   );
 }
-function Footer() {
+export function Footer() {
   return (
     <footer>
       <div className="footer-lead">
