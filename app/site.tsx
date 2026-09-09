@@ -465,7 +465,7 @@ function BlockField() {
   return (
     <figure className="block-field">
       <Image
-        src="/lifecycle-blocks.png"
+        src="/lifecycle-blocks-fixed.png"
         alt="An isometric field of connected system blocks with one active orange cube"
         fill
         sizes="(max-width: 850px) 100vw, 62vw"
@@ -777,32 +777,37 @@ export function HomePage() {
               [
                 'Understand the business',
                 'Commercial problem, users, constraints and existing technology.',
+                '/services/product-experience',
               ],
               [
                 'Design the system',
                 'Product experience and technical architecture are designed together.',
+                '/services/product-experience',
               ],
               [
                 'Build deliberately',
                 'Small production-ready releases rather than speculative builds.',
+                '/services/software-engineering',
               ],
               [
                 'Launch responsibly',
                 'Testing, deployment, monitoring and operational readiness.',
+                '/services/cloud-infrastructure',
               ],
               [
                 'Measure and improve',
                 'Performance and user behaviour shape the next release.',
+                '/services/growth',
               ],
-            ].map(([t, c], i) => (
-              <article key={t}>
+            ].map(([t, c, href], i) => (
+              <a className="process-step" href={href} key={t}>
                 <span>{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <h3>{t}</h3>
                   <p>{c}</p>
                 </div>
                 <ArrowRight className="process-arrow" aria-hidden="true" />
-              </article>
+              </a>
             ))}
           </div>
         </section>

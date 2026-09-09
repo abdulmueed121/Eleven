@@ -668,7 +668,7 @@ nav small {
   font-size: 16px;
 }
 .experience-grid b,
-.process article > span,
+.process-step > span,
 .industries b {
   font-size: 13px;
   font-weight: 500;
@@ -682,19 +682,21 @@ nav small {
 .process > div:last-child {
   border-top: 1px solid var(--border);
 }
-.process article {
+.process-step {
   padding: 28px 0;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: 36px minmax(0, 1fr) 24px;
   gap: 15px;
+  color: inherit;
+  text-decoration: none;
 }
 .process h3 {
   font-size: var(--text-subheading);
   font-weight: 500;
   margin-bottom: 12px;
 }
-.process article p {
+.process-step p {
   max-width: 60ch;
   color: var(--muted-foreground);
   font-size: 17px;
@@ -706,8 +708,12 @@ nav small {
   color: var(--accent);
   transition: transform var(--motion);
 }
-.process article:hover .process-arrow {
+.process-step:hover .process-arrow {
   transform: rotate(-45deg);
+}
+.process-step:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
 }
 .solutions {
   background: var(--accent);
@@ -1621,7 +1627,7 @@ footer a:hover { color: var(--brand-sand); }
   .experience-grid {
     grid-template-columns: 1fr;
   }
-  .process article {
+  .process-step {
     grid-template-columns: 24px minmax(0, 1fr) 20px;
     gap: 10px;
   }
