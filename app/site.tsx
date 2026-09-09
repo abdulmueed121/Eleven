@@ -465,7 +465,7 @@ function BlockField() {
   return (
     <figure className="block-field">
       <Image
-        src="/lifecycle-blocks-fixed.png"
+        src="/lifecycle-blocks.png"
         alt="An isometric field of connected system blocks with one active orange cube"
         fill
         sizes="(max-width: 850px) 100vw, 62vw"
